@@ -63,6 +63,22 @@ describe 'Movies show page' do
   end
 
   it 'when I clock the button I am taken back to the show page and I see that actor listed' do
-    
+    universal = Studio.create!(name: 'Universal Studios', location: 'Hollywood')
+    dc = Studio.create!(name: 'DC', location: 'New York City')
+    marvel = Studio.create!(name: 'Marvel', location: 'Hollywood')
+    jurassic = Movie.create!(title: 'Jurrasic Park', creation_year: 1993, genre: 'Action/Adventure', studio_id: universal.id)
+    batman = Movie.create!(title: 'Batman', creation_year: 2016, genre: 'Action/Adventure', studio_id: dc.id)
+    superman = Movie.create!(title: 'Superman', creation_year: 2014, genre: 'Action/Adventure', studio_id: dc.id)
+    jeff = Actor.create!(name: 'Jeff Goldbluhm', age: 43)
+    laura = Actor.create!(name: 'Laura Dern', age: 45)
+    richard = Actor.create!(name: 'Richard Attenborough', age: 44)
+    visit "/movies/#{jurassic.id}"
+
+    fill_in('Name', with: 'Harry Potter')
+    fill_in('Age', with: 28)
+    click_button('Add Actor')
+    expect(current_path).to eq("/movies/#{jurassic.id}")
+    save_and_open_page
+    expect(page).to have_content("Harry Potter")
   end
 end
